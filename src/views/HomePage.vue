@@ -1,7 +1,19 @@
 <template>
     <div class="home">
-        <h1>The Book Store <button @click="outtahere">Logout</button><button>Cart</button></h1>
+        <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button><button>Cart</button></h1>
         <!-- add more elements to match wireframe -->
+        <table v-if="bookArr.length > 0 ">
+            <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Price</th>
+            </tr>
+            <tr v-for="(u,pos) in bookArr" :key="pos">
+                <td><img :src="u.image"></td>
+                <td>{{u.title}}</td>
+                <td>{{u.price}}</td>
+            </tr>
+        </table>
     </div>
 </template>
 
@@ -30,7 +42,7 @@ import axios, {AxiosResponse} from "axios";
 
 @Component
 export default class HomePage extends Vue {
-  
+  bookArr: Array<ITBooks> = [];
   userPhotoURL = "";
   message = "";
   auth: Auth | null = null;
@@ -71,12 +83,25 @@ export default class HomePage extends Vue {
           url: "https://api.itbook.store/1.0/new",
       })
       .then((r:AxiosResponse) => r.data)
-      .then((resp: BookStoreResponse) => {
-          for (let k = 0; k < resp.books.length; k++) {
-            const item = resp.books[k];
-            console.log(`Title: ${item.title}, price: ${item.price}`); //this grabs info from api will use this to make the "cell" with book info
-          }
+      .then((r:BookStoreResponse) => {
+          this.bookArr.push(...r.books);
       });
+    //   .then((resp: BookStoreResponse) => {
+    //       for (let k = 0; k < resp.books.length; k++) {
+    //         const item = resp.books[k];
+    //         console.log(`Title: ${item.title}, price: ${item.price}`); //this grabs info from api will use this to make the "cell" with book info
+    //       }
+    //   });
   }
 }
 </script>
+
+<style scoped>
+    #pageTitle {
+        margin: auto;
+        width: 50%;
+        border: 3px solid gray;
+        padding: 10px;
+        margin-bottom: 25px;
+    }
+</style>

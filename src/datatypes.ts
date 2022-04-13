@@ -1,5 +1,4 @@
 type BookStoreResponse = {
-    info: any;
     books: Array<ITBooks>;
 };
 
