@@ -21,9 +21,16 @@ import WorldTime from "@/components/world-time.vue";
 import myDB from "@/App.vue";
 import { DocumentReference, setDoc, doc, getFirestore } from "@firebase/firestore";
 import {Firestore} from "firebase/firestore";
+import { BookStoreResponse, ITBooks } from "@/datatypes";
+import axios, {AxiosResponse} from "axios";
+
+// const bookAPIUrl = "https://api.itbook.store/1.0/new";
+// const todayDealBookUrl = "https://api.itbook.store/1.0/search/mongodb";
+
 
 @Component
 export default class HomePage extends Vue {
+  
   userPhotoURL = "";
   message = "";
   auth: Auth | null = null;
@@ -39,6 +46,7 @@ export default class HomePage extends Vue {
       }
     });
     this.myDB = getFirestore(); 
+    this.loadBookData();
   }
   
   showMessage(txt: string) {
@@ -55,6 +63,20 @@ export default class HomePage extends Vue {
 
     // Back to the previous page
     this.$router.back();
+  }
+
+  loadBookData(): void {
+      axios.request({
+          method: "GET",
+          url: "https://api.itbook.store/1.0/new",
+      })
+      .then((r:AxiosResponse) => r.data)
+      .then((resp: BookStoreResponse) => {
+          for (let k = 0; k < resp.books.length; k++) {
+            const item = resp.books[k];
+            console.log(`Title: ${item.title}, price: ${item.price}`); //this grabs info from api will use this to make the "cell" with book info
+          }
+      });
   }
 }
 </script>
