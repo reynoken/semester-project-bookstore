@@ -89,6 +89,19 @@ export default class HomePage extends Vue {
       });
    
   }
+  //this function should save book to "cart" when user hits button, problem is it saves all books
+  saveBookToCart(): void {
+    const auth = getAuth();
+    const myDB = getFirestore();
+    const uid = auth.currentUser?.uid;
+    if (uid!== undefined) {
+      const dx = doc(myDB, "bookstoreuser", uid);
+      //let l: string[] = this.bookArr.map((z:ITBooks) => z.image)
+      let n: string[] = this.bookArr.map((z:ITBooks) => z.title)
+      let m: string[] = this.bookArr.map((z:ITBooks) => z.price)
+       setDoc(dx, {title: n, price: m});
+    }
+  }
 
   goToCart(): void {
     this.$router.push({name: "cart"});
