@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button><button>Cart</button></h1>
+        <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button> <button @click="goToCart">Cart</button></h1>
         <!-- add more elements to match wireframe -->
         <table v-if="bookArr.length > 0 ">
             <tr>
@@ -93,6 +93,10 @@ export default class HomePage extends Vue {
     //       }
     //   });
   }
+
+  goToCart(): void {
+    this.$router.push({name: "cart"});
+  }
 }
 </script>
 
@@ -103,5 +107,6 @@ export default class HomePage extends Vue {
         border: 3px solid gray;
         padding: 10px;
         margin-bottom: 25px;
+        text-align: center;
     }
 </style>
