@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button> <button @click="goToCart">Cart</button></h1>
+        <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button> <button @click="goToCart">Cart</button> </h1>
         <!-- add more elements to match wireframe -->
         <table v-if="bookArr.length > 0 ">
             <tr>
@@ -11,9 +11,10 @@
             <tr v-for="(u,pos) in bookArr" :key="pos">
                 <td><img :src="u.image"></td>
                 <td>{{u.title}}</td>
-                <td>{{u.price}}</td>
+                <td>{{u.price}} <button @click="saveBookToCart">Add to Cart</button></td>
             </tr>
         </table>
+        <h1 id="pageTitle">For Today's Deals: <button @click="todaysDeals">Click Here</button></h1>
     </div>
 </template>
 
@@ -86,16 +87,14 @@ export default class HomePage extends Vue {
       .then((r:BookStoreResponse) => {
           this.bookArr.push(...r.books);
       });
-    //   .then((resp: BookStoreResponse) => {
-    //       for (let k = 0; k < resp.books.length; k++) {
-    //         const item = resp.books[k];
-    //         console.log(`Title: ${item.title}, price: ${item.price}`); //this grabs info from api will use this to make the "cell" with book info
-    //       }
-    //   });
+   
   }
 
   goToCart(): void {
     this.$router.push({name: "cart"});
+  }
+  todaysDeals(): void {
+    this.$router.push({name: "todaysdeals"});
   }
 }
 </script>
@@ -108,5 +107,9 @@ export default class HomePage extends Vue {
         padding: 10px;
         margin-bottom: 25px;
         text-align: center;
+    }
+    table {
+      margin: auto;
+      text-align: center;
     }
 </style>

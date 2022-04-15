@@ -27,6 +27,13 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import("../views/CheckOut.vue"),
   },
+  {
+    path: "/todaysdeals",
+    name: "todaysdeals",
+    props: true,
+    component: () => 
+      import("../views/TodaysDeals.vue"),
+  },
 ];
 
 const router = new VueRouter({
