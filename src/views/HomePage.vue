@@ -32,7 +32,7 @@ import {
 } from "firebase/auth";
 import WorldTime from "@/components/world-time.vue";
 import myDB from "@/App.vue";
-import { DocumentReference, setDoc, doc, getFirestore } from "@firebase/firestore";
+import { DocumentReference, getDoc, DocumentSnapshot, setDoc, doc, getFirestore } from "@firebase/firestore";
 import {Firestore} from "firebase/firestore";
 import { BookStoreResponse, ITBooks } from "@/datatypes";
 import axios, {AxiosResponse} from "axios";
@@ -102,6 +102,21 @@ export default class HomePage extends Vue {
        setDoc(dx, {title: n, price: m});
     }
   }
+
+//ADDED HERE DOES NOT WORK 
+  selectedBooks() {
+        const auth = getAuth();
+        const uid = auth.currentUser?.uid;
+        if (uid !== undefined) {
+            const userColl = doc(this.myDB!, "bookstoreuser", uid);
+            getDoc(userColl).then((qs:DocumentSnapshot) => {
+                if(qs.exists()) {
+                    let data = qs.data();
+                    //this.bookArr.push({title: data.title, price: data.price});
+                }else console.debug("does not exist");
+            });
+        }
+    }
 
   goToCart(): void {
     this.$router.push({name: "cart"});
