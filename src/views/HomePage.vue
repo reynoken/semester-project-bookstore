@@ -4,7 +4,7 @@
         <!-- add more elements to match wireframe -->
         <table id="navbar">
             <tr>
-                <th><button @click="BooksAvailableNow">Books Available Now</button></th>
+                <th>Books Available Now</th>
                 <th>Filter A-Z</th>
                 <th>Filter by Genre</th>
             </tr>

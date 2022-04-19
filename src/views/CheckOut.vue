@@ -1,6 +1,6 @@
 <template>
     <div class="cart">
-        <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button> <button @click="goToCart">Cart</button> <button @click="toHome">Continue Browsing</button></h1>
+        <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button>  <button @click="toHome">Continue Browsing</button></h1>
         <h2>Cart</h2>
         <h3>Load in books that are saved to cart</h3>
     <div class="payment">
@@ -19,7 +19,7 @@
             <label for="cvv">CVV:</label><br>
             <input type="text" id="cvv" name="cvv"><br><br>
         </form>
-        <button @click="savePaymentInfo">Submit Payment</button>
+        <button >Submit Payment</button>
     </div>
     </div>
 </template>
@@ -55,29 +55,36 @@ export default class CheckOut extends Vue {
         //this.selectedBooks();
     }
  
-    savePaymentInfo() {
-        var fname = (<HTMLInputElement>document.getElementById("fname")).value;
-        var lname =  (<HTMLInputElement>document.getElementById("lname")).value;
-        var address = (<HTMLInputElement>document.getElementById("address")).value;
-        var ccNum = (<HTMLInputElement>document.getElementById("ccNum")).value;
-        var expDate = (<HTMLInputElement>document.getElementById("expDate")).value;
-        var cvv = (<HTMLInputElement>document.getElementById("cvv")).value;
-        console.log(fname);
-        //add user info to collection
-        const auth = getAuth();
-        const myDB = getFirestore();
-        const uid = auth.currentUser?.uid;
-                if (uid !== undefined) {
-            // const dx = doc(myDB, "paymentinfo", uid);
-            const dx = doc(myDB, "paymentinfo", uid);
-           setDoc(dx, {FirstName: fname, LastName: lname, Address: address, CreditCard: ccNum, ExpDate: expDate, CVV: cvv});
-        }
+    // savePaymentInfo() {
+    //     var fname = (<HTMLInputElement>document.getElementById("fname")).value;
+    //     var lname =  (<HTMLInputElement>document.getElementById("lname")).value;
+    //     var address = (<HTMLInputElement>document.getElementById("address")).value;
+    //     var ccNum = (<HTMLInputElement>document.getElementById("ccNum")).value;
+    //     var expDate = (<HTMLInputElement>document.getElementById("expDate")).value;
+    //     var cvv = (<HTMLInputElement>document.getElementById("cvv")).value;
+    //     console.log(fname);
+    //     //add user info to collection
+    //     const auth = getAuth();
+    //     const myDB = getFirestore();
+    //     const uid = auth.currentUser?.uid;
+    //             if (uid !== undefined) {
+    //         // const dx = doc(myDB, "paymentinfo", uid);
+    //         const dx = doc(myDB, "paymentinfo", uid);
+    //        setDoc(dx, {FirstName: fname, LastName: lname, Address: address, CreditCard: ccNum, ExpDate: expDate, CVV: cvv});
+    //     }
    
-    }
+    // }
  
     toHome(): void {
         this.$router.back();
     }
+    outtahere(): void {
+    if (this.auth) signOut(this.auth);
+
+    // Back to the previous page
+    this.$router.back();
+  }
+
 }
 </script>
  
