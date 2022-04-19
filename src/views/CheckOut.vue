@@ -1,6 +1,6 @@
 <template>
     <div class="cart">
-        <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button> <button @click="goToCart">Cart</button> <button @click="toHome">Continue Browsing</button></h1> 
+        <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button> <button @click="goToCart">Cart</button> <button @click="toHome">Continue Browsing</button></h1>
         <h2>Cart</h2>
         <h3>Load in books that are saved to cart</h3>
     <div class="payment">
@@ -18,12 +18,12 @@
             <input type="text" id="expDate" name="expDate"><br><br>
             <label for="cvv">CVV:</label><br>
             <input type="text" id="cvv" name="cvv"><br><br>
-        </form> 
+        </form>
         <button @click="savePaymentInfo">Submit Payment</button>
     </div>
     </div>
 </template>
-
+ 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
 import {
@@ -42,8 +42,8 @@ import { DocumentReference, setDoc, addDoc, collection, doc, getFirestore, Docum
 import {Firestore} from "firebase/firestore";
 import { BookStoreResponse, ITBooks } from "@/datatypes";
 import axios, {AxiosResponse} from "axios";
-
-
+ 
+ 
 @Component
 export default class CheckOut extends Vue {
     message = "";
@@ -54,7 +54,7 @@ export default class CheckOut extends Vue {
         this.auth = getAuth();
         //this.selectedBooks();
     }
-
+ 
     savePaymentInfo() {
         var fname = (<HTMLInputElement>document.getElementById("fname")).value;
         var lname =  (<HTMLInputElement>document.getElementById("lname")).value;
@@ -67,19 +67,20 @@ export default class CheckOut extends Vue {
         const auth = getAuth();
         const myDB = getFirestore();
         const uid = auth.currentUser?.uid;
-        if (uid !== undefined) {
+                if (uid !== undefined) {
+            // const dx = doc(myDB, "paymentinfo", uid);
             const dx = doc(myDB, "paymentinfo", uid);
-            setDoc(dx, {FirstName: fname, LastName: lname, Address: address, CreditCard: ccNum, ExpDate: expDate, CVV: cvv});
+           setDoc(dx, {FirstName: fname, LastName: lname, Address: address, CreditCard: ccNum, ExpDate: expDate, CVV: cvv});
         }
-    
+   
     }
-
+ 
     toHome(): void {
         this.$router.back();
     }
 }
 </script>
-
+ 
 <style scoped>
 h2 {
     text-align: center;

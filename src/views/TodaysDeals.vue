@@ -8,6 +8,7 @@
                 <th>Image</th>
                 <th>Title</th>
                 <th>Price</th>
+                <th>Discounted Price</th>
             </tr>
             <tr v-for="(u,pos) in bookArr.slice(6,9)" :key="pos">
                 
@@ -122,6 +123,8 @@ export default class HomePage extends Vue {
 <style scoped>
 h2 {
   text-align: center;
+  font-family: cursive; 
+  color: rgb(255, 255, 255); 
 }
     #pageTitle {
         margin: auto;
@@ -131,6 +134,8 @@ h2 {
         margin-bottom: 25px;
         text-align: center;
     }
+
+
     table {
       margin: auto;
       text-align: center;
@@ -139,4 +144,74 @@ h2 {
     #price  {
       color: brown;
     }
+
+   #pageTitle { 
+        width: 70%;
+        border: 3px solid gray;
+        border-style: dotted;
+        padding: 10px;
+        margin-bottom: 25px;
+        text-align: center;
+        font-family: cursive;
+        font-style: italic;
+        color: rgb(7, 127, 17);
+    }
+
+ 
+    div{
+        background-color: rgb(235, 225, 194);
+    }
+
+    button{
+      font-family: 'Courier New', Courier, monospace;
+      border-radius: 20cm;
+    }
+
+     button:hover {
+      background-color: rgb(91, 179, 74);
+      font-style: italic; 
+      font-family: 'Courier New', Courier, monospace;
+      border-radius: 20cm;
+      cursor: pointer;
+    }  
+    
+    table {
+      text-align: center; 
+      border-collapse: collapse;
+      width: 75%;
+      margin: auto;
+      text-align: center;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    table td, table th {
+      text-align: center;
+      margin: auto;
+      border: 1px solid rgb(138, 105, 45);
+      padding: 8px;
+    }
+
+    table tr:nth-child(even){
+      text-align: center;
+      background-color: #abb478; 
+      }
+
+        table tr:nth-child(odd){
+      text-align: center;
+      background-color: #a4afcf; 
+      }
+
+    table tr:hover {
+      background-color: rgb(206, 196, 169);
+      } 
+
+    table th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: rgb(116, 75, 0);
+      color: white; 
+    }
+
+    
 </style>

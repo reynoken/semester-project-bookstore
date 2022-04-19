@@ -3,20 +3,19 @@
     <section>
       <div id="loginpanel">
         <input type="text" v-model="u_email"
-          placeholder="Enter your email">
+          placeholder="johnDoe@gmail.com">
         <input type="password" v-model="u_pass"
-          placeholder="Enter your password">
+          placeholder="Insert password">
         <div id="loginByEmail">
           <button :disabled="!isValidInput"
-            @click="createAccount">Signup</button>
-          <button :disabled="u_email.length === 0" @click="resetPass">Reset
-            Password</button>
+            @click="createAccount">Membership Signup</button>
+          <button :disabled="u_email.length === 0" @click="resetPass">Reset Password</button>
           <button :disabled="!isValidInput"
-            @click="withEmail">Login</button>
+            @click="withEmail">Membership Login</button>
         </div>
         <div>
           <input id="verif" type="checkbox" v-model="emailVerification">
-          <label for="verif">Send verification email</label>
+          <label for="verif">Send verification email when creating account</label>
         </div>
         <div id="withProvider">
           <button @click="withGMail">Google</button>
@@ -165,7 +164,7 @@ section {
   font-size: 80%;
   font-style: italic;
   border-radius: 0.5em;
-  background-color: hsl(0, 0%, 75%);
+  background-color: hsl(108, 25%, 57%);
   padding: 0.5em;
 }
 #loginByEmail {
@@ -173,7 +172,19 @@ section {
 }
 #withProvider {
   margin-top: 1em;
-  align-self: center;
+  align-self: center; 
+}
+
+div {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+button {
+  background-color: rgb(107, 70, 0);
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 20cm;
+  cursor: pointer;
 }
 
 input {

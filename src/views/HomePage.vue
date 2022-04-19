@@ -2,6 +2,14 @@
     <div class="home">
         <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button> <button @click="goToCart">Cart</button> </h1>
         <!-- add more elements to match wireframe -->
+        <table id="navbar">
+            <tr>
+                <th><button @click="BooksAvailableNow">Books Available Now</button></th>
+                <th>Filter A-Z</th>
+                <th>Filter by Genre</th>
+            </tr>
+        </table>
+
         <table v-if="bookArr.length > 0 ">
             <tr>
                 <th>Image</th>
@@ -52,7 +60,7 @@ export default class HomePage extends Vue {
   mounted(): void {
     this.auth = getAuth();
     onAuthStateChanged(this.auth, (user: User | null) => {
-      console.log("Auth changed", user);
+      // console.log("Auth changed", user);
       if (user) {
         this.userPhotoURL = user.photoURL ?? "";
         this.userInfo = `${user.displayName ?? "No Name"}`;
@@ -130,14 +138,76 @@ export default class HomePage extends Vue {
 <style scoped>
     #pageTitle {
         margin: auto;
-        width: 50%;
+        width: 70%;
         border: 3px solid gray;
+        border-style: dotted;
         padding: 10px;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
         text-align: center;
+        font-family: cursive;
+        font-style: italic;
+        color: rgb(7, 127, 17);
     }
+
+    #navbar { 
+        font-family: cursive;
+        margin-bottom: 15px;
+    }
+
+ 
+    div{
+        background-color: rgb(235, 225, 194);
+    }
+    
+    button{
+      font-family: 'Courier New', Courier, monospace;
+      border-radius: 20cm;
+    }
+
+     button:hover {
+      background-color: rgb(91, 179, 74);
+      font-style: italic; 
+      font-family: 'Courier New', Courier, monospace;
+      border-radius: 20cm; 
+      cursor: pointer;
+    }  
+    
     table {
+      text-align: center; 
+      border-collapse: collapse;
+      width: 75%;
       margin: auto;
       text-align: center;
+      font-family: 'Courier New', Courier, monospace;
     }
+
+    table td, table th {
+      text-align: center;
+      margin: auto;
+      border: 1px solid rgb(138, 105, 45);
+      padding: 8px;
+    }
+
+    table tr:nth-child(even){
+      text-align: center;
+      background-color: #abb478; 
+      }
+
+        table tr:nth-child(odd){
+      text-align: center;
+      background-color: #a4afcf; 
+      }
+
+    table tr:hover {
+      background-color: rgb(206, 196, 169);
+      } 
+
+    table th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: rgb(116, 75, 0);
+      color: white; 
+    }
+
 </style>
