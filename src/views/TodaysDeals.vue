@@ -14,7 +14,7 @@
                 
                 <td><img :src="u.image"></td>
                 <td>{{u.title}}</td>
-                <td>Original {{u.price}}</td><td id="price"> Now $20 <button @click="saveBookToCart">Add to Cart</button></td>
+                <td>Original {{u.price}}</td><td id="price"> Now $20 <button @click="saveBookToCart(pos)">Add to Cart</button></td>
                 
             </tr>
            
@@ -98,17 +98,19 @@ export default class HomePage extends Vue {
       });
    
   }
-  //this function should save book to "cart" when user hits button, problem is it saves all books
-  saveBookToCart(): void {
+  //fyi this needs to be saved to a different collection name because we already have one with this name
+  //please be careful when adding new code do not just copy and paste
+  saveBookToCart(pos: number): void {
     const auth = getAuth();
     const myDB = getFirestore();
     const uid = auth.currentUser?.uid;
+    const book = this.bookArr[pos];
     if (uid!== undefined) {
       const dx = doc(myDB, "bookstoreuser", uid);
       //let l: string[] = this.bookArr.map((z:ITBooks) => z.image)
-      let n: string[] = this.bookArr.map((z:ITBooks) => z.title)
-      let m: string[] = this.bookArr.map((z:ITBooks) => z.price)
-       setDoc(dx, {title: n, price: m});
+      // let n: string[] = this.bookArr.map((z:ITBooks) => z.title)
+      // let m: string[] = this.bookArr.map((z:ITBooks) => z.price)
+       setDoc(dx, {title: book.title, price: book.price});
     }
   }
 

@@ -19,7 +19,7 @@
             <tr v-for="(u,pos) in bookArr" :key="pos">
                 <td><img :src="u.image"></td>
                 <td>{{u.title}}</td>
-                <td>{{u.price}} <button @click="saveBookToCart">Add to Cart</button></td>
+                <td>{{u.price}} <button @click="saveBookToCart(pos)">Add to Cart</button></td>
             </tr>
         </table>
         <h1 id="pageTitle">For Today's Deals: <button @click="todaysDeals">Click Here</button></h1>
@@ -97,21 +97,27 @@ export default class HomePage extends Vue {
       });
    
   }
-  //this function should save book to "cart" when user hits button, problem is it saves all books
-  saveBookToCart(): void {
+
+  
+  // this function now adds the book at the position
+  saveBookToCart(pos: number): void {
     const auth = getAuth();
     const myDB = getFirestore();
     const uid = auth.currentUser?.uid;
+    const book = this.bookArr[pos];
     if (uid!== undefined) {
-      const dx = doc(myDB, "bookstoreuser", uid);
-      //let l: string[] = this.bookArr.map((z:ITBooks) => z.image)
-      let n: string[] = this.bookArr.map((z:ITBooks) => z.title)
-      let m: string[] = this.bookArr.map((z:ITBooks) => z.price)
-       setDoc(dx, {title: n, price: m});
-    }
+      const dx = doc(myDB, "bookstoreusertest", uid);
+       setDoc(dx, {title: book.title, price: book.price});
+    }else console.log("cannot add book to cart");
   }
 
-//ADDED HERE DOES NOT WORK 
+
+
+
+
+
+
+//FIXME 
   selectedBooks() {
         const auth = getAuth();
         const uid = auth.currentUser?.uid;
