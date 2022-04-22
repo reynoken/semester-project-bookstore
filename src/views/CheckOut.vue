@@ -23,7 +23,7 @@
             <label for="cvv">CVV:</label><br>
             <input type="text" id="cvv" name="cvv"><br><br>
         </form>
-        <button >Submit Payment</button>
+        <button @click="savePaymentInfo">Submit Payment</button>
     </div>
     </div>
 </template>
@@ -42,7 +42,7 @@ import {
 } from "firebase/auth";
 import WorldTime from "@/components/world-time.vue";
 import myDB from "@/App.vue";
-import { DocumentReference, setDoc, addDoc, collection, doc, getFirestore, DocumentSnapshot, CollectionReference } from "@firebase/firestore";
+import { DocumentReference, setDoc, addDoc, collection, doc, getFirestore, DocumentSnapshot, CollectionReference, getDoc, QuerySnapshot, QueryDocumentSnapshot } from "@firebase/firestore";
 import {Firestore} from "firebase/firestore";
 import { BookStoreResponse, ITBooks } from "@/datatypes";
 import axios, {AxiosResponse} from "axios";
@@ -56,29 +56,43 @@ export default class CheckOut extends Vue {
     mounted(): void {
         this.myDB = getFirestore();
         this.auth = getAuth();
-        //this.selectedBooks();
     }
  
-    // savePaymentInfo() {
-    //     var fname = (<HTMLInputElement>document.getElementById("fname")).value;
-    //     var lname =  (<HTMLInputElement>document.getElementById("lname")).value;
-    //     var address = (<HTMLInputElement>document.getElementById("address")).value;
-    //     var ccNum = (<HTMLInputElement>document.getElementById("ccNum")).value;
-    //     var expDate = (<HTMLInputElement>document.getElementById("expDate")).value;
-    //     var cvv = (<HTMLInputElement>document.getElementById("cvv")).value;
-    //     console.log(fname);
-    //     //add user info to collection
+    savePaymentInfo() {
+        //saves user's personal info to firestore
+        let str1 = (document.getElementById("fname") as HTMLInputElement).value;
+        let str2 = (document.getElementById("lname") as HTMLInputElement).value;
+        let str3 = (document.getElementById("address") as HTMLInputElement).value;
+        let str4 = (document.getElementById("ccNum") as HTMLInputElement).value;
+        let str5 = (document.getElementById("expDate") as HTMLInputElement).value;
+        let str6 = (document.getElementById("cvv") as HTMLInputElement).value;
+        console.log(str1, str2, str3, str4, str5, str6);
+        //add user info to collection
+        const auth = getAuth();
+        const myDB = getFirestore();
+        const uid = auth.currentUser?.uid;
+        if (uid !== undefined) {
+           const dx = doc(myDB, "paymentinfo", uid);
+           setDoc(dx, {FirstName: str1, LastName: str2, Address: str3, CreditCard: str4, ExpDate: str5, CVV: str6});
+        }
+    }
+ 
+ //Could not get this to work
+    // findItemsInCart(): void {
     //     const auth = getAuth();
     //     const myDB = getFirestore();
     //     const uid = auth.currentUser?.uid;
-    //             if (uid !== undefined) {
-    //         // const dx = doc(myDB, "paymentinfo", uid);
-    //         const dx = doc(myDB, "paymentinfo", uid);
-    //        setDoc(dx, {FirstName: fname, LastName: lname, Address: address, CreditCard: ccNum, ExpDate: expDate, CVV: cvv});
+    //     if (uid !== undefined) {
+    //         const dx = doc(myDB, "bookstoreusertest", uid);
+    //         getDoc(dx).then((qs:DocumentSnapshot) => {
+    //             if(qs.exists()) {
+    //                 let data = qs.data();
+    //                 console.log(qs.data);
+    //             }
+    //         })
     //     }
-   
     // }
- 
+
     toHome(): void {
         this.$router.back();
     }
