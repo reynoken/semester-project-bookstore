@@ -4,9 +4,9 @@
         <!-- add more elements to match wireframe -->
         <table id="navbar">
             <tr>
-                <th>Books Available Now</th>
-                <th>Filter A-Z</th>
-                <th>Filter by Genre</th>
+                <th><button @click="booksAvail">Books Available Now</button></th>
+                <th><button @click="filterShort">Sort By Title Length</button></th>
+                <th><button @click="freeBooks">Free Books</button></th>
             </tr>
         </table>
 
@@ -46,7 +46,6 @@ import { BookStoreResponse, ITBooks } from "@/datatypes";
 import axios, {AxiosResponse} from "axios";
 
 // const bookAPIUrl = "https://api.itbook.store/1.0/new";
-// const todayDealBookUrl = "https://api.itbook.store/1.0/search/mongodb";
 
 
 @Component
@@ -57,6 +56,7 @@ export default class HomePage extends Vue {
   auth: Auth | null = null;
   myDB: Firestore | null = null;
   userInfo = "";
+  searchTerm = "ASP";
   mounted(): void {
     this.auth = getAuth();
     onAuthStateChanged(this.auth, (user: User | null) => {
@@ -93,12 +93,12 @@ export default class HomePage extends Vue {
       })
       .then((r:AxiosResponse) => r.data)
       .then((r:BookStoreResponse) => {
+          this.bookArr.splice(0);
           this.bookArr.push(...r.books);
       });
    
   }
 
-  
   // this function now adds the book at the position
   saveBookToCart(pos: number): void {
     const auth = getAuth();
@@ -110,12 +110,6 @@ export default class HomePage extends Vue {
        setDoc(dx, {title: book.title, price: book.price});
     }else console.log("cannot add book to cart");
   }
-
-
-
-
-
-
 
 //FIXME 
   selectedBooks() {
@@ -131,6 +125,48 @@ export default class HomePage extends Vue {
             });
         }
     }
+
+  //same as loadBookData, but acts as a reset if user wants to go back to original list
+  booksAvail(): void {
+    axios.request({
+          method: "GET",
+          url: "https://api.itbook.store/1.0/new",
+      })
+      .then((r:AxiosResponse) => r.data)
+      .then((r:BookStoreResponse) => {
+          this.bookArr.splice(0);
+          this.bookArr.push(...r.books);
+      });
+  }
+
+  //sorts data by title length
+  filterShort(): void {
+    axios.request({
+          method: "GET",
+          url: "https://api.itbook.store/1.0/new",
+      })
+      .then((r:AxiosResponse) => r.data)
+      .then((r:BookStoreResponse) => {
+          //sorts arrat by title length
+          this.bookArr.splice(0);
+          const sortedTitle = r.books.sort((a, b):number => a.title.length - b.title.length);
+          this.bookArr.push(...sortedTitle);
+      });
+  }
+
+  freeBooks(): void {
+    axios.request({
+          method: "GET",
+          url: "https://api.itbook.store/1.0/new",
+      })
+      .then((r:AxiosResponse) => r.data)
+      .then((r:BookStoreResponse) => {
+          //add code here to sort by price
+          this.bookArr.splice(0);
+          const isFree = r.books.filter((s: ITBooks): boolean => s.price === "$0.00");
+          this.bookArr.push(...isFree);
+      });
+  }
 
   goToCart(): void {
     this.$router.push({name: "cart"});
