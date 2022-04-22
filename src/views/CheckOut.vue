@@ -1,7 +1,11 @@
 <template>
     <div class="cart">
         <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button>  <button @click="toHome">Continue Browsing</button></h1>
-        <h2>Cart</h2>
+        <table id="navbar">
+            <tr>
+                <th>Cart</th>
+            </tr>
+        </table>
         <h3>Load in books that are saved to cart</h3>
     <div class="payment">
         <h2>Payment Information</h2>
@@ -96,14 +100,46 @@ h3 {
     text-align: center;
     font-weight: normal;
 }
- #pageTitle {
-        margin: auto;
-        width: 55%;
-        border: 3px solid gray;
-        padding: 10px;
-        margin-bottom: 25px;
-        text-align: center;
+div{
+    background-color: rgb(235, 225, 194);
+}
+#navbar { 
+    font-family: cursive;
+    margin-bottom: 15px;
+}
+table {
+    text-align: center; 
+    border-collapse: collapse;
+    width: 75%;
+    margin: auto;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+table td, table th {
+    text-align: center;
+    margin: auto;
+    border: 1px solid rgb(138, 105, 45);
+    padding: 8px;
+}
+table th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: center;
+      background-color: rgb(116, 75, 0);
+      color: white; 
     }
+#pageTitle {
+    margin: auto;
+    width: 70%;
+    border: 3px solid gray;
+    border-style: dotted;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: cursive;
+    font-style: italic;
+    color: rgb(7, 127, 17);
+}
 .payment{
     margin: auto;
     width: 20%;
@@ -111,4 +147,16 @@ h3 {
     padding: 10px;
     text-align: center;
 }
+    button{
+      font-family: 'Courier New', Courier, monospace;
+      border-radius: 20cm;
+    }
+
+     button:hover {
+      background-color: rgb(91, 179, 74);
+      font-style: italic; 
+      font-family: 'Courier New', Courier, monospace;
+      border-radius: 20cm; 
+      cursor: pointer;
+    }  
 </style>
