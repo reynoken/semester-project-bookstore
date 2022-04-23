@@ -107,7 +107,7 @@ export default class HomePage extends Vue {
     const book = this.bookArr[pos];
     if (uid!== undefined) {
       const dx = doc(myDB, "bookstoreusertest", uid);
-       setDoc(dx, {title: book.title, price: book.price});
+       setDoc(dx, {title: book.title, price: book.price, image: book.image, subtitle: book.subtitle});
     }else console.log("cannot add book to cart");
   }
 

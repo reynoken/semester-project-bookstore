@@ -1,12 +1,25 @@
 <template>
     <div class="cart">
         <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button>  <button @click="toHome">Continue Browsing</button></h1>
+        <h2>Cart</h2>
         <table id="navbar">
             <tr>
-                <th>Cart</th>
+                <th>Cart Summary</th>
+                <th>Title</th>
+                <th>Price</th>
+            </tr>
+            <tr v-for="(u, pos) in book" :key="pos">
+                <td><img :src="u.image"></td>
+                <td>{{u.title}}</td>
+                <td>{{u.price}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Total:</td>
+                <td>$</td>
             </tr>
         </table>
-        <h3>Load in books that are saved to cart</h3>
+        
     <div class="payment">
         <h2>Payment Information</h2>
         <form>
@@ -23,7 +36,7 @@
             <label for="cvv">CVV:</label><br>
             <input type="text" id="cvv" name="cvv"><br><br>
         </form>
-        <button @click="savePaymentInfo">Submit Payment</button>
+        <button @click="savePaymentInfo">Submit Order</button>
     </div>
     </div>
 </template>
@@ -53,9 +66,12 @@ export default class CheckOut extends Vue {
     message = "";
     myDB: Firestore | null = null;
     auth: Auth | null = null;
+    book: Array<ITBooks> = [];
+    cart: any[] = [];
     mounted(): void {
         this.myDB = getFirestore();
         this.auth = getAuth();
+        this.findItemsInCart();
     }
  
     savePaymentInfo() {
@@ -78,20 +94,26 @@ export default class CheckOut extends Vue {
     }
  
  //Could not get this to work
-    // findItemsInCart(): void {
-    //     const auth = getAuth();
-    //     const myDB = getFirestore();
-    //     const uid = auth.currentUser?.uid;
-    //     if (uid !== undefined) {
-    //         const dx = doc(myDB, "bookstoreusertest", uid);
-    //         getDoc(dx).then((qs:DocumentSnapshot) => {
-    //             if(qs.exists()) {
-    //                 let data = qs.data();
-    //                 console.log(qs.data);
-    //             }
-    //         })
-    //     }
-    // }
+    findItemsInCart(): void {
+        const auth = getAuth();
+        const myDB = getFirestore();
+        const uid = auth.currentUser?.uid;
+        if (uid !== undefined) {
+            const dx = doc(myDB, "bookstoreusertest", uid);
+            getDoc(dx).then((qs:DocumentSnapshot) => {
+                if(qs.exists()) {
+                    let data = qs.data();
+                    //this.cart.push(data);
+                    //const {title, price} = qs.data();
+                    //console.log(title, price);
+                    //this.cart.push(title, price);
+                    this.book.push({title: data.title, subtitle: data.subtitle, image: data.image, price: data.price})
+                    console.log(this.book); //creates an object with price and title properly fetched
+                }else console.debug("does not exsist");
+            })
+        }
+
+    }
 
     toHome(): void {
         this.$router.back();
@@ -108,7 +130,9 @@ export default class CheckOut extends Vue {
  
 <style scoped>
 h2 {
-    text-align: center;
+  text-align: center;
+  font-family: cursive; 
+  color: rgb(116, 75, 0);
 }
 h3 {
     text-align: center;

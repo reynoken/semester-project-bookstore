@@ -10,7 +10,7 @@
                 <th>Price</th>
                 <th>Discounted Price</th>
             </tr>
-            <tr v-for="(u,pos) in bookArr.slice(6,9)" :key="pos">
+            <tr v-for="(u,pos) in bookArr.slice(7,10)" :key="pos">
                 
                 <td><img :src="u.image"></td>
                 <td>{{u.title}}</td>
@@ -98,8 +98,7 @@ export default class HomePage extends Vue {
       });
    
   }
-  //fyi this needs to be saved to a different collection name because we already have one with this name
-  //please be careful when adding new code do not just copy and paste
+  //saves book to user cart
   saveBookToCart(pos: number): void {
     const auth = getAuth();
     const myDB = getFirestore();
@@ -126,7 +125,8 @@ export default class HomePage extends Vue {
 h2 {
   text-align: center;
   font-family: cursive; 
-  color: rgb(255, 255, 255); 
+  /* color: rgb(255, 255, 255);  */
+  color: rgb(116, 75, 0);
 }
     #pageTitle {
         margin: auto;
