@@ -109,8 +109,6 @@ export default class CheckOut extends Vue {
   
   }
 
-
- //Could not get this to work
     findItemsInCart(): void {
         const auth = getAuth();
         const myDB = getFirestore();
@@ -121,13 +119,7 @@ export default class CheckOut extends Vue {
 
             getDoc(dx).then((qs:DocumentSnapshot) => {
                 if(qs.exists()) {
-
                     let data = qs.data();
-                    
-                    //this.cart.push(data);
-                    //const {title, price} = qs.data();
-                    //console.log(title, price);
-                    //this.cart.push(title, price);
                     this.book.push({title: data.title, subtitle: data.subtitle, image: data.image, price: data.price})
                     console.log(this.book); //creates an object with price and title properly fetched
                 }else console.debug("does not exsist"); 

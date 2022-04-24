@@ -1,7 +1,6 @@
 <template>
     <div class="home">
         <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button> <button @click="goToCart">Cart</button> </h1>
-        <!-- add more elements to match wireframe -->
         <table id="navbar">
             <tr>
                 <th><button @click="booksAvail">Books Available Now</button></th>
@@ -111,7 +110,7 @@ export default class HomePage extends Vue {
     }else console.log("cannot add book to cart");
   }
 
-//FIXME 
+  //ignore
   selectedBooks() {
         const auth = getAuth();
         const uid = auth.currentUser?.uid;
@@ -139,7 +138,7 @@ export default class HomePage extends Vue {
       });
   }
 
-  //sorts data by title length
+  
   filterShort(): void {
     axios.request({
           method: "GET",
@@ -147,7 +146,7 @@ export default class HomePage extends Vue {
       })
       .then((r:AxiosResponse) => r.data)
       .then((r:BookStoreResponse) => {
-          //sorts arrat by title length
+          //sorts array by title length
           this.bookArr.splice(0);
           const sortedTitle = r.books.sort((a, b):number => a.title.length - b.title.length);
           this.bookArr.push(...sortedTitle);
@@ -161,7 +160,7 @@ export default class HomePage extends Vue {
       })
       .then((r:AxiosResponse) => r.data)
       .then((r:BookStoreResponse) => {
-          //add code here to sort by price
+          //displays all free books
           this.bookArr.splice(0);
           const isFree = r.books.filter((s: ITBooks): boolean => s.price === "$0.00");
           this.bookArr.push(...isFree);

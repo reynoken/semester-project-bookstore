@@ -2,7 +2,6 @@
     <div class="deals">
         <h1 id="pageTitle">The Book Store <button @click="outtahere">Logout</button> <button @click="goToCart">Cart</button> <button @click="toHome">Continue Browsing</button></h1>
         <h2>Today's Deals</h2>
-        <!-- add more elements to match wireframe -->
         <table v-if="bookArr.length > 0 ">
             <tr>
                 <th>Image</th>
