@@ -8,17 +8,19 @@
                 <th>Title</th>
                 <th>Price</th>
             </tr>
-            <tr v-for="(u, pos) in book" :key="pos">
+            <tr id="row1" v-for="(u, pos) in book" :key="pos">
                 <td><img :src="u.image"></td>
                 <td>{{u.title}}</td>
-                <td>{{u.price}}</td>
+                <td>{{u.price}} <button @click="removeItem(pos)">Remove Item</button></td>
             </tr>
             <tr>
                 <td></td>
                 <td>Total:</td>
                 <td>$</td>
             </tr>
-        </table>
+        </table> 
+        
+        
         
     <div class="payment">
         <h2>Payment Information</h2>
@@ -55,10 +57,12 @@ import {
 } from "firebase/auth";
 import WorldTime from "@/components/world-time.vue";
 import myDB from "@/App.vue";
-import { DocumentReference, setDoc, addDoc, collection, doc, getFirestore, DocumentSnapshot, CollectionReference, getDoc, QuerySnapshot, QueryDocumentSnapshot } from "@firebase/firestore";
+import { DocumentReference, setDoc, addDoc,deleteDoc, collection, doc, getFirestore, DocumentSnapshot, CollectionReference, getDoc, QuerySnapshot, QueryDocumentSnapshot, updateDoc, deleteField } from "@firebase/firestore";
 import {Firestore} from "firebase/firestore";
 import { BookStoreResponse, ITBooks } from "@/datatypes";
 import axios, {AxiosResponse} from "axios";
+import HomePage from "@/views/HomePage.vue";
+
  
  
 @Component
@@ -68,6 +72,7 @@ export default class CheckOut extends Vue {
     auth: Auth | null = null;
     book: Array<ITBooks> = [];
     cart: any[] = [];
+    
     mounted(): void {
         this.myDB = getFirestore();
         this.auth = getAuth();
@@ -92,25 +97,41 @@ export default class CheckOut extends Vue {
            setDoc(dx, {FirstName: str1, LastName: str2, Address: str3, CreditCard: str4, ExpDate: str5, CVV: str6});
         }
     }
- 
+
+    removeItem(): void {
+    document.getElementById("row1")?.remove();
+
+    const auth = getAuth();
+    const myDB = getFirestore();
+    const uid = auth.currentUser?.uid;
+    deleteDoc(doc(myDB, `bookstoreusertest/${uid}`))
+    .then(() => { console.debug("Fields deleted") });
+  
+  }
+
+
  //Could not get this to work
     findItemsInCart(): void {
         const auth = getAuth();
         const myDB = getFirestore();
         const uid = auth.currentUser?.uid;
+    
         if (uid !== undefined) {
             const dx = doc(myDB, "bookstoreusertest", uid);
+
             getDoc(dx).then((qs:DocumentSnapshot) => {
                 if(qs.exists()) {
+
                     let data = qs.data();
+                    
                     //this.cart.push(data);
                     //const {title, price} = qs.data();
                     //console.log(title, price);
                     //this.cart.push(title, price);
                     this.book.push({title: data.title, subtitle: data.subtitle, image: data.image, price: data.price})
                     console.log(this.book); //creates an object with price and title properly fetched
-                }else console.debug("does not exsist");
-            })
+                }else console.debug("does not exsist"); 
+            }) 
         }
 
     }
@@ -129,6 +150,9 @@ export default class CheckOut extends Vue {
 </script>
  
 <style scoped>
+
+
+
 h2 {
   text-align: center;
   font-family: cursive; 
