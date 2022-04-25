@@ -22,10 +22,12 @@
             </tr>
         </table>
         <h1 id="pageTitle">For Today's Deals: <button @click="todaysDeals">Click Here</button></h1>
+        <ChartDoughnut/>
     </div>
 </template>
 
 <script lang="ts">
+import ChartDoughnut from "./components/ChartDoughnut.vue"
 import {Component, Prop, Vue } from "vue-property-decorator";
 import {
   getAuth,
