@@ -16,7 +16,7 @@
             <tr>
                 <td></td>
                 <td>Total:</td>
-                <td>$</td>
+                <td>${{totalStr}}</td>
             </tr>
         </table> 
         
@@ -39,6 +39,7 @@
             <input type="text" id="cvv" name="cvv"><br><br>
         </form>
         <button @click="savePaymentInfo">Submit Order</button>
+        <br><br><span id="msgbox" v-show="message.length > 0">{{message}}</span>
     </div>
     </div>
 </template>
@@ -72,6 +73,7 @@ export default class CheckOut extends Vue {
     auth: Auth | null = null;
     book: Array<ITBooks> = [];
     cart: any[] = [];
+    totalStr = "0.00";
     
     mounted(): void {
         this.myDB = getFirestore();
@@ -95,7 +97,18 @@ export default class CheckOut extends Vue {
         if (uid !== undefined) {
            const dx = doc(myDB, "paymentinfo", uid);
            setDoc(dx, {FirstName: str1, LastName: str2, Address: str3, CreditCard: str4, ExpDate: str5, CVV: str6});
-        }
+           this.showMessage("Order Submitted Successfully");
+        }else this.showMessage("Order Could Not Be Placed");
+        this.resetVal();
+    }
+
+    resetVal(): void{
+        (document.getElementById("fname") as HTMLInputElement).value = "";
+        (document.getElementById("lname") as HTMLInputElement).value = "";
+        (document.getElementById("address") as HTMLInputElement).value = "";
+        (document.getElementById("ccNum") as HTMLInputElement).value = "";
+        (document.getElementById("expDate") as HTMLInputElement).value = "";
+        (document.getElementById("cvv") as HTMLInputElement).value = "";
     }
 
     removeItem(): void {
@@ -106,7 +119,8 @@ export default class CheckOut extends Vue {
     const uid = auth.currentUser?.uid;
     deleteDoc(doc(myDB, `bookstoreusertest/${uid}`))
     .then(() => { console.debug("Fields deleted") });
-  
+    
+    this.totalStr = "0.00";
   }
 
     findItemsInCart(): void {
@@ -122,6 +136,8 @@ export default class CheckOut extends Vue {
                     let data = qs.data();
                     this.book.push({title: data.title, subtitle: data.subtitle, image: data.image, price: data.price})
                     console.log(this.book); //creates an object with price and title properly fetched
+                    this.totalStr = data.price.slice(1);
+                    console.log(this.totalStr);
                 }else console.debug("does not exsist"); 
             }) 
         }
@@ -137,6 +153,15 @@ export default class CheckOut extends Vue {
     // Back to the previous page
     this.$router.back();
   }
+    showMessage(txt: string) {
+    this.message = txt;
+
+    // The message will automatically disappear after 5 seconds
+    setTimeout(() => {
+      this.message = "";
+    }, 5000);
+  }
+
 
 }
 </script>
@@ -213,4 +238,5 @@ table th {
       border-radius: 20cm; 
       cursor: pointer;
     }  
+
 </style>
